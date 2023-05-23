@@ -1,30 +1,28 @@
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import * as React from 'react';
-
 
 function Navbar({ isLoggedin, onLogout }) {
   const router = useRouter();
   const [colleges, setColleges] = useState([]);
   const [search, setSearch] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [expanded, setExpanded] = useState(false);
+  const searchInputRef = useRef(null);
+  const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   const fetchData = async () => {
-
     const res = await fetch(`http://127.0.0.1:8000/get_colleges`, {
       method: "GET",
     });
-
-
     const data = await res.json();
     setColleges(data);
-
   };
 
   const onSub = event => {
     event.preventDefault();
     router.push(`/colleges?search=${search}`);
-  }
+  };
+
   const onHandleChange = event => {
     const value = event.target.value;
     setSearch(value);
@@ -34,16 +32,32 @@ function Navbar({ isLoggedin, onLogout }) {
     setSuggestions(filteredSuggestions);
   };
 
-  const inputWidthClass = search ? 'w-96' : '';
+  const handleSearchClick = () => {
+    setExpanded(true);
+  };
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      if (selectedSuggestion) {
+        setSearch(selectedSuggestion.name.toLowerCase());
+      }
+      setExpanded(false);
+      setSelectedSuggestion(null);
+    }, 200);
+  };
+  const handleClick = (college) => {
+    setSelectedSuggestion(college);
+    setSearch(college.name.toLowerCase());
+    setSuggestions([]);
+  };
 
   useEffect(() => {
     fetchData();
-  }, [])
-
+  }, []);
   return (
     <>
       <nav >
-        <div className="navbar bg-base-100">
+        <div className="navbar bg-base-100 text-lg">
           <div className="navbar-start">
             <div className="dropdown">
               <label tabIndex="0" className="btn btn-ghost lg:hidden">
@@ -142,7 +156,7 @@ function Navbar({ isLoggedin, onLogout }) {
                 <a href="compare">Compare</a>
               </li>
               <li>
-                <a href="Scholarship">Scholarship</a>
+                <a href="Scholarships">Scholarship</a>
               </li>
               <li>
                 <a href="about">About</a>
@@ -154,16 +168,24 @@ function Navbar({ isLoggedin, onLogout }) {
             </ul>
           </div>
           <div className="navbar-end">
-            <form onSubmit={onSub} className="flex py-3">
-              <div style={{ position: 'relative' }}>
+            <form onSubmit={onSub} className="flex py-3 gap-3">
+              <div
+                style={{ position: 'relative' }}
+                className={`search-container relative max-w-md transition-width duration-300 ease-in-out ${expanded ? 'w-72' : 'w-40'
+                  }`}
+              >
                 <input
                   type="text"
                   value={search}
                   onChange={onHandleChange}
                   placeholder="Search College, Course"
-                  className="rounded-lg border-2 h-12 mx-2 px-2 hover:border-cyan focus:outline-none focus:border-cyan ${inputWidthClass}"
+                  className={`rounded-lg border-2 h-12 mx-2 px-2 hover:border-cyan focus:outline-none focus:border-cyan w-full ${expanded ? 'shadow-md' : ''
+                    }`}
+                  ref={searchInputRef}
+                  onClick={handleSearchClick}
+                  onBlur={handleBlur}
                 />
-                {search.length > 0 && (
+                {search.length > 0 && expanded && (
                   <ul
                     style={{
                       position: 'absolute',
@@ -175,15 +197,13 @@ function Navbar({ isLoggedin, onLogout }) {
                       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                     }}
                   >
-                    {suggestions.map(college => (
+                    {suggestions.map((college) => (
                       <li key={college.id}>
                         <button
                           type="button"
-                          onClick={() => {
-                            setSearch(college.name.toLowerCase());
-                            setSuggestions([]);
-                          }}
-                          className="text-left w-full py-1 px-2 hover:bg-gray-200"
+                          onClick={() => handleClick(college)}
+                          className={`text-left w-full py-1 px-2 hover:bg-gray-200 ${college === selectedSuggestion ? "bg-gray-200" : ""
+                            }`}
                         >
                           {college.name}
                         </button>
@@ -192,11 +212,13 @@ function Navbar({ isLoggedin, onLogout }) {
                   </ul>
                 )}
               </div>
-              <button type="submit" className="btn bg-cyan border-none hover:bg-blue-400">
+              <button
+                type="submit"
+                className={`btn bg-cyan border-none hover:bg-blue-400`}
+              >
                 Search
               </button>
             </form>
-
           </div>
           <div>
             <a href="login" className="mx-6">Login</a>

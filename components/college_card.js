@@ -19,7 +19,7 @@ function CollegeCard({
 }) {
   return (
     <>
-      <div className={`drop-shadow-md bg-white ${style.card} justify-center`}>
+      <div className={`shadow-lg hover:drop-shadow-2xl bg-white ${style.card} justify-center  transition   hover:-translate-y-1 hover:scale-110 transition-duration: 300ms;`}>
         <p className=" text-xl text-slate-400">{location}</p>
         <Link
           href={{ pathname: "college/", query: { name: name } }}

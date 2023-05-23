@@ -33,7 +33,7 @@
 
 .page_card {
     min-width: 60vw;
-    max-height: 1500px;
+    max-height: max-content;
     border-radius: 15px;
     padding: 10px 30px;
 }
@@ -54,8 +54,16 @@
     font-size: 50px;
 }
 
+.compare_tab_card {
+    margin-left: 5vw;
+}
+
 .tab_card {
     margin-left: 14vw;
+}
+
+.section_card {
+    transition: all 0.3s ease;
 }
 
 .section_card_college_div {
@@ -164,4 +172,61 @@
     75% {
         border-color: transparent;
     }
+}
+
+.expandInput {
+    width: 10rem;
+    transition: width 0.3s ease-out;
+}
+
+.expandInput:focus {
+    width: 24rem;
+}
+
+.fadeIn {
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.slideIn {
+    animation: slideIn 1s ease-in;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.fadeInUp {
+    animation: fadeInUp 1s ease-in;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.scholarshipsec {
+    height: 50vh;
 }

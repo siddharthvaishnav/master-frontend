@@ -29,7 +29,7 @@ function CollegePage({
   cost_48_to_75k = 0,
   cost_75_to_110k = 0,
   cost_110k_plus = 0,
-  course = '',
+
   grescore = '0',
   logo = general,
   toefl = 0,
@@ -37,13 +37,18 @@ function CollegePage({
   country = 'USA',
   gate = 0,
   cat = 0,
+  course
 
 }) {
+  const [animate, setAnimate] = React.useState(false);
 
+  React.useEffect(() => {
+    setAnimate(true);
+  }, []);
 
   return (
     <>
-      <section className={`  ${style.section_card}`}>
+      <section className={`${style.section_card} ${animate ? style.animate : ''} scroll-smooth`}>
         <div className="flex gap-40 ">
           <div className={`p-10  ${style.section_card_college_div}`}>
             <div className="flex gap-4 py-3" >
@@ -102,7 +107,7 @@ function CollegePage({
           <Image src={stanford} className="h-96 w-96 my-16 rounded-3xl" alt="image" />
         </div>
       </section >
-      <div className="my-10 flex justify-center gap-12">
+      <div className="my-10 flex justify-center gap-12 scroll-smooth">
         <div className={`drop-shadow-md bg-white ${style.page_card}`}>
           <p className=" text-xl text-slate-400">{location}</p>
 
@@ -214,10 +219,23 @@ function CollegePage({
             <div>
               <div className={`my-4 ${style.divider}`} />
 
+              <div>
+                <p className="text-slate-400 text-2xl font-bold">
+                  Courses
 
-              <p className="text-slate-400 text-2xl font-bold">
-                Courses
-              </p>
+                </p>
+                <p className="px-5">
+                  {course && course.length > 0 ? (
+                    <><div className="grid grid-cols-2 text-lg gap-3 ">
+                      {course.map((course, index) => (
+                        <p key={index}>{course.title}</p>
+                      ))}</div>
+                    </>
+                  ) : (
+                    <p>No courses available</p>
+                  )}
+                </p>
+              </div>
             </div>
             {country == 'USA' ? (
               <>

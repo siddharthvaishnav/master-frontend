@@ -112,7 +112,7 @@ export default function BasicTabs({
 
     return (
 
-        <div className={`flex  my-10 gap-10 px-24 ${style.tab_card}`}>
+        <div className={`flex  my-10 gap-10 px-24  justify-center ${style.compare_tab_card}`}>
             <div className={`drop-shadow-md bg-white ${style.page_card}`}>
                 <p className='text-4xl py-5 font-bold text-slate-400'>Analysis</p>
                 <Box sx={{ width: '100%' }}>

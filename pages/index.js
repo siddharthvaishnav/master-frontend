@@ -30,14 +30,16 @@ export default function Home() {
         <div className={`hero-content flex-col lg:flex-row-reverse`}>
           <Image src={Logo} alt="image" className={`${styles.heroAnimation}`} />
           <div>
-            <h1 className={`text-8xl font-bold ${styles.typingEffect}`}>
+            <h1 className={`text-8xl font-bold text-cyan drop-shadow-xl ${styles.typingEffect}`}>
               Master's Next
             </h1>
-            <p className="text-xl py-6">
+
+            <p className="text-3xl py-6 text-slate-700 justify allign-center">
               One stop solution for the master's degree
             </p>
+
             <button
-              className="btn bg-cyan border-none hover:bg-blue-400"
+              className="btn mt-3 bg-cyan border-none hover:bg-blue-400 transition hover:-translate-y-1 hover:scale-150 hover:shadow-xl"
               onClick={handleNavigation}
             >
               {isLoading ? <Loader /> : "Browse Colleges"}
